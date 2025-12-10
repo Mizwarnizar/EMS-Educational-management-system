@@ -128,4 +128,3 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.student.first_name} - {self.event.title}"
-
