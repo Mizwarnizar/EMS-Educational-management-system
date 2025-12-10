@@ -1,0 +1,12 @@
+<h2>Edit Event</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="title" value="{{ event.title }}" required><br><br>
+    <textarea name="description">{{ event.description }}</textarea><br><br>
+    <input type="date" name="date" value="{{ event.date }}"><br><br>
+    <input type="time" name="start_time" value="{{ event.start_time }}"><br><br>
+    <input type="time" name="end_time" value="{{ event.end_time }}"><br><br>
+
+    <button type="submit">Update</button>
+</form>

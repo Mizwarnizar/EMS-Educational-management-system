@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Participants</title>
+</head>
+<body>
+
+<h2>Participants for: {{ event.title }}</h2>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+    </tr>
+
+    {% for p in participants %}
+    <tr>
+        <td>{{ p.student_name }}</td>
+        <td>{{ p.student_email }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="2">No participants yet</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'teacher_dashboard' %}">Back to Dashboard</a>
+
+</body>
+</html>

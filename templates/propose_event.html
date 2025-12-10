@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propose Event - EMS</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="teacher_dashboard.html" class="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </a>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-800">Propose New Event</h1>
+                    <p class="text-xs text-slate-500">Teacher Mode: Approval required</p>
+                </div>
+            </div>
+            <!-- Status Badge: Pending (Amber) -->
+            <div class="hidden md:block">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">
+                    Status: Pending
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-6">
+        <div class="max-w-4xl mx-auto">
+
+<form method="POST" action="{% url 'teacher_event_proposal' %}"
+      class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+    {% csrf_token %}
+
+                <!-- Proposal Alert -->
+                <div class="bg-amber-50 border-b border-amber-100 p-4 flex gap-3 items-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600 mt-0.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <div>
+                        <h3 class="text-sm font-bold text-amber-800">Proposal Mode</h3>
+                        <p class="text-xs text-amber-700 mt-1">Your event will require approval from an Administrator before it appears on the public calendar.</p>
+                    </div>
+                </div>
+
+                <!-- Section 1: Basic Info -->
+                <div class="p-8 border-b border-slate-100">
+                    <h2 class="text-lg font-bold text-indigo-600 mb-6 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">1</span>
+                        Event Details
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Event Title</label>
+                            <input type="text" name="title" required placeholder="e.g. Annual Science Fair" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Event Type</label>
+                            <select name="event_type" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                                <option value="workshop">Workshop</option>
+                                <option value="seminar">Seminar</option>
+                                <option value="cultural_fest">Cultural Fest</option>
+                                <option value="sports_event">Sports Event</option>
+                                <option value="club_event">Club Event</option>
+                                <option value="exam_related">Exam Related</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Department</label>
+                            <input type="text" name="department" value="Science Dept" required class="w-full px-4 py-2 border border-slate-300 rounded-lg bg-slate-50 text-slate-500 focus:bg-white focus:text-slate-800 transition-colors">
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                            <textarea name="description" rows="3" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none resize-none" placeholder="Describe the purpose and target audience..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Logistics -->
+                <div class="p-8 border-b border-slate-100 bg-slate-50/50">
+                    <h2 class="text-lg font-bold text-indigo-600 mb-6 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">2</span>
+                        Time & Venue
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Date</label>
+                            <input type="date" name="date" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Start Time</label>
+                                <input type="time" name="start_time" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">End Time</label>
+                                <input type="time" name="end_time" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Preferred Venue Request</label>
+                            <!-- Venue Selection (Matches Admin DB Values) -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <label class="relative border rounded-lg p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all bg-white">
+                                    <input type="radio" name="venue" value="Main Hall" class="peer sr-only" required>
+                                    <div class="font-semibold text-slate-800">Main Hall</div>
+                                    <div class="text-xs text-slate-500">Capacity: 500</div>
+                                    <div class="absolute top-4 right-4 w-4 h-4 border border-slate-300 rounded-full peer-checked:bg-indigo-600 peer-checked:border-indigo-600"></div>
+                                </label>
+                                <label class="relative border rounded-lg p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all bg-white">
+                                    <input type="radio" name="venue" value="Lecture Theatre A" class="peer sr-only">
+                                    <div class="font-semibold text-slate-800">Lecture Theatre A</div>
+                                    <div class="text-xs text-slate-500">Capacity: 120</div>
+                                    <div class="absolute top-4 right-4 w-4 h-4 border border-slate-300 rounded-full peer-checked:bg-indigo-600 peer-checked:border-indigo-600"></div>
+                                </label>
+                                <label class="relative border rounded-lg p-4 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all bg-white">
+                                    <input type="radio" name="venue" value="Science Lab 301" class="peer sr-only">
+                                    <div class="font-semibold text-slate-800">Science Lab 301</div>
+                                    <div class="text-xs text-slate-500">Capacity: 30</div>
+                                    <div class="absolute top-4 right-4 w-4 h-4 border border-slate-300 rounded-full peer-checked:bg-indigo-600 peer-checked:border-indigo-600"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Equipment & Registration (Matching Requirements) -->
+                <div class="p-8 border-b border-slate-100">
+                    <h2 class="text-lg font-bold text-indigo-600 mb-6 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">3</span>
+                        Equipment & Registration
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        <!-- Left Column: Registration -->
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Registration</label>
+                                <div class="flex flex-col gap-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="registration_required" value="true" checked class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                        <span class="text-sm text-slate-700">Registration Required</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="radio" name="registration_required" value="false" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                                        <span class="text-sm text-slate-700">No Registration Needed</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Specific Requirements (Optional)</label>
+                                <input type="text" name="specific_requirements" placeholder="e.g., Only for 10th-grade students" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Groups & Resources -->
+                        <div class="space-y-6">
+
+                            <!-- Target Groups -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Target Participant Groups</label>
+                                <div class="flex flex-col gap-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="target_groups" value="Students" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">Students</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="target_groups" value="Teachers" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">Teachers / Staff</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="target_groups" value="Parents" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">Parents</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Equipment -->
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Equipment/Resource Needs</label>
+                                <div class="space-y-2 mb-2">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="resources" value="AV System" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">AV System (1)</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="resources" value="Projector" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">Projector (1)</span>
+                                    </label>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" name="resources" value="Tables" class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                                        <span class="text-sm text-slate-700">Additional Tables (10)</span>
+                                    </label>
+                                </div>
+                                <input type="text" name="other_resources" placeholder="Other specific needs..." class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="p-6 bg-slate-50 flex items-center justify-end gap-3">
+                    <a href="teacher_dashboard.html" class="px-6 py-2.5 rounded-lg text-slate-600 font-medium hover:bg-slate-200 transition-colors">Cancel</a>
+
+                    <!-- Submit Proposal Button (Amber) -->
+                    <button type="submit" class="px-6 py-2.5 rounded-lg bg-amber-600 text-white font-medium hover:bg-amber-700 shadow-lg shadow-amber-200 transition-all transform hover:-translate-y-0.5">
+                        Submit Proposal
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </main>
+
+</body>
+</html>
