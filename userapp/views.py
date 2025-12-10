@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from event_management_system import settings
 from . import models
-from .models import UserProfile, Event, EventRegistration,Participant
+from .models import UserProfile, Event, EventRegistration,Participant,Feedback
 
 
 # -------------------------------
@@ -120,12 +120,37 @@ def student_dashboard(request):
 
 
 
+from django.shortcuts import render
+from .models import Event, Feedback
+
 def parent_dashboard(request):
     if request.session.get('user_role') != 'parent':
         return redirect('login')
 
     events = Event.objects.filter(status='approved')
-    return render(request, 'parent_dashboard.html', {'events': events})
+    feedback_list = Feedback.objects.all().order_by('-created_at')
+
+    if request.method == "POST":
+        event_id = request.POST.get('event_id')
+        rating = request.POST.get('rating')
+        feedback_text = request.POST.get('feedback')
+
+        Feedback.objects.create(
+            event_id=event_id,
+            student_id=request.session['user_id'],  # parent as user
+            rating=rating,
+            feedback=feedback_text
+        )
+
+        messages.success(request, "Feedback submitted successfully!")
+        return redirect("parent_dashboard")
+
+    return render(request, "parent_dashboard.html", {
+        "events": events,
+        "feedback_list": feedback_list
+    })
+
+
 
 
 def event_proposal(request):

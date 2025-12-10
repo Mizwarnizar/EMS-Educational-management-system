@@ -116,3 +116,16 @@ class EventRegistration(models.Model):
 
     class Meta:
         unique_together = ('student', 'event')
+
+
+
+class Feedback(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    student = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    feedback = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.first_name} - {self.event.title}"
+
