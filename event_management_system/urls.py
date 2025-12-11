@@ -19,7 +19,7 @@ from userapp import views
 from userapp.views import mark_attendance, unmark_attendance
 
 urlpatterns = [
-    path('login', views.login_view, name='login_view'),
+    path('', views.login_view, name='login'),
     path('user_registration/', views.user_register),
     path('logout/', views.logout_view, name='logout'),
     path('user_registration_success/', views.user_registration_success, name='user_registration_success'),
