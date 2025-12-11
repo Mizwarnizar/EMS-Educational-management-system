@@ -16,7 +16,7 @@ def login_view(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        print("EMAIL:", email)       # ✅ DEBUG
+        print("EMAIL:", email)       
         print("PASSWORD:", password)
 
         try:
@@ -97,7 +97,7 @@ def teacher_dashboard(request):
 
     teacher_id = request.session.get('user_id')
 
-    # ✅ Only events created by THIS teacher and approved by admin
+    #  Only events created by THIS teacher and approved by admin
     approved_events = Event.objects.filter(
         created_by_id=teacher_id,
         status='approved'
@@ -206,7 +206,7 @@ def admin_dashboard(request):
         'pending_events': pending_events,
         'pending_count': pending_events.count(),
         'approved_count': approved_events.count(),
-        'today_count': today_events.count(),   # 👈 NEW
+        'today_count': today_events.count(),   
         'recent_events': recent_events,
     }
 
@@ -270,7 +270,7 @@ def teacher_event_proposal(request):
         return redirect('login')
 
     if request.method == 'POST':
-        print("✅ POST request received")
+        print(" POST request received")
         title = request.POST.get('title')
         description = request.POST.get('description')
         event_type = request.POST.get('event_type')
@@ -299,7 +299,7 @@ def teacher_event_proposal(request):
             end_time=end_time,
             venue=venue,
             created_by_id=request.session['user_id'],
-            status='pending'   # ✅ VERY IMPORTANT
+            status='pending'   
         )
 
         return redirect('teacher_dashboard')
@@ -313,7 +313,7 @@ def teacher_event_proposal(request):
 from django.shortcuts import get_object_or_404, redirect
 from .models import Event
 
-# ✅ ADMIN: APPROVE EVENT
+#  ADMIN: APPROVE EVENT
 def approve_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     event.status = "approved"
@@ -321,7 +321,7 @@ def approve_event(request, event_id):
     return redirect("admin_dashboard")
 
 
-# ✅ ADMIN: REJECT EVENT
+#  ADMIN: REJECT EVENT
 def reject_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     event.status = "rejected"
@@ -329,13 +329,13 @@ def reject_event(request, event_id):
     return redirect("admin_dashboard")
 
 
-# ✅ TEACHER: EDIT EVENT
+#  TEACHER: EDIT EVENT
 def edit_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     return redirect("teacher_dashboard")  # you can later connect edit form
 
 
-# ✅ TEACHER: MANAGE PARTICIPANTS
+#  TEACHER: MANAGE PARTICIPANTS
 def manage_participants(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     return redirect("teacher_dashboard")  # you can later build participants page
@@ -351,53 +351,53 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 def register_for_event(request, event_id):
-    print("\n🔥 REGISTER EVENT TRIGGERED")
+    print("\n REGISTER EVENT TRIGGERED")
     print("SESSION USER ID:", request.session.get('user_id'))
 
     if request.session.get('user_role') != 'student':
-        print("❌ Not a student")
+        print(" Not a student")
         return redirect('login')
 
     student_id = request.session.get('user_id')
 
     if not student_id:
-        print("❌ No student ID in session")
+        print(" No student ID in session")
         return redirect('login')
 
     # Fetch student
     student = get_object_or_404(UserProfile, id=student_id)
-    print("👍 Student found:", student)
+    print(" Student found:", student)
 
     # Fetch event
     event = get_object_or_404(Event, id=event_id)
-    print("👍 Event found:", event)
+    print(" Event found:", event)
 
     if request.method == "POST":
-        print("➡️ POST request received")
+        print(" POST request received")
 
         try:
             registration, created = EventRegistration.objects.get_or_create(
                 student=student,
                 event=event
             )
-            print("📌 EventRegistration created:", created)
+            print(" EventRegistration created:", created)
 
             if created:
-                print("➡️ Creating Participant Entry...")
+                print(" Creating Participant Entry...")
                 Participant.objects.create(
                     event=event,
                     student_name=f"{student.first_name} {student.last_name}",
                     student_email=student.email
                 )
-                print("✅ Participant saved!")
+                print(" Participant saved!")
 
                 messages.success(request, "Successfully registered!")
             else:
-                print("⚠️ Already registered")
+                print(" Already registered")
                 messages.warning(request, "Already registered.")
 
         except Exception as e:
-            print("\n❌ ERROR WHILE SAVING:", e)
+            print("\n ERROR WHILE SAVING:", e)
             import traceback
             traceback.print_exc()
 
