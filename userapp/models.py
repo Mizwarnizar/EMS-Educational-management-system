@@ -74,13 +74,13 @@ class Event(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-    # ✅ NEW FIELD — VENUE
+    #  NEW FIELD — VENUE
     venue = models.CharField(max_length=150)
 
-    # ✅ NEW FIELD — STAFF COORDINATORS (comma-separated for simplicity)
+    #  NEW FIELD — STAFF COORDINATORS (comma-separated for simplicity)
     staff_coordinators = models.CharField(max_length=255)
 
-    # ✅ NEW FIELD — EQUIPMENT / RESOURCES
+    #  NEW FIELD — EQUIPMENT / RESOURCES
     equipment_required = models.TextField(blank=True, null=True)
 
     STATUS_CHOICES = (
